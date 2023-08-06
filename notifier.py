@@ -8,6 +8,7 @@ from email import charset
 import argparse
 import boto3
 import html
+import humanize
 import json
 import pandas as pd
 import plotly.express as px
@@ -98,10 +99,10 @@ class MailMessage:
         self.msg.attach(att)
 
     def serialize(self):
-        body = '\n'.join(self.warnings) + '\n'.join(self.mainbody)
+        body = ''.join(self.warnings) + ''.join(self.mainbody)
         alternatives = MIMEMultipart('alternative')
 
-        # Construct a new charset which uses Quoted Printables (base64 is default)
+        # Construct a charset using Quoted Printables (base64 is default)
         cs = charset.Charset('utf-8')
         cs.body_encoding = charset.QP
 
@@ -115,6 +116,28 @@ def generate_one_report(args, config, archive, msg):
     df['Date'] = pd.to_datetime(df['start'])
 
     msg.body('<h3>' + archive['remote-repo'] + '</h3>')
+
+    latest = df.iloc[df['Date'].idxmax()]
+    age = pd.Timestamp.now() - latest['Date']
+
+    msg.body(f"Latest backup was at {latest['Date']} (")
+    msg.body(humanize.precisedelta(age, minimum_unit='hours'))
+    msg.body(' ago). Backup size was ')
+    msg.body(humanize.naturalsize(latest['stats.original_size']))
+    msg.body(' across ')
+    msg.body(humanize.naturalsize(latest['stats.nfiles']))
+    msg.body(' files, compressed down to ')
+    msg.body(humanize.naturalsize(latest['stats.compressed_size']))
+    msg.body('.')
+
+    if age > pd.Timedelta(days=2):
+        msg.warn("<p style='font-weight: bold; color: red'>")
+        msg.warn("WARNING: Backup ")
+        msg.warn(archive['remote-repo'])
+        msg.warn(" is ")
+        msg.warn(humanize.precisedelta(age, minimum_unit='hours'))
+        msg.warn(" old!</p>")
+
 
     fig = plotly.subplots.make_subplots(
         rows=2,
