@@ -4,6 +4,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import make_msgid
+from email import charset
 import argparse
 import boto3
 import html
@@ -13,45 +14,30 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.subplots
 import subprocess
+import sys
 import yaml
 
 # Email send methods
-def construct_message(config, subj, body):
-    msg = MIMEMultipart('mixed')
-    msg['Subject'] = subj
-    msg['From'] = config['email-from']
-    msg['To'] = ",".join(config['email-to'])
-
-    alternatives = MIMEMultipart('alternative')
-    alternatives.attach(MIMEText(body, 'html', 'utf-8'))
-    msg.attach(alternatives)
-
-    return msg.as_string()
 
 # Local file - used for dev/debug, just writes the HTML to the local filesystem
-def email_localfile(args, config, subj, body):
-    fn = 'test-email.html'
-    print(f'Writing test email to {fn}')
+def email_localfile(args, config, msg):
+    fn = 'test-email.eml'
+    sys.stderr.write(f'Writing test email to {fn}\n')
     with open(fn, 'w') as f:
-        f.write(f"<p>From: {html.escape(config['email-from'])}</p>\n")
-        f.write(f"<p>To: {html.escape(','.join(config['email-to']))}</p>\n")
-        f.write(f"<p>Subj: {subj}</p>\n")
-        f.write(f"<p><p>{body}\n")
+        f.write(msg.serialize())
 
-def email_aws(args, config, subj, body):
-    msg = construct_message(config, subj, body)
+def email_aws(args, config, msg):
     session = boto3.Session(profile_name=config['email-aws-profile'])
     client = session.client('ses', region_name = 'us-west-2')
     client.send_raw_email(
-        Source=config['email-from'],
-        Destinations=config['email-to'],
+        Source=msg.fromaddr,
+        Destinations=msg.toaddrs,
         RawMessage={
-            'Data': msg,
+            'Data': msg.serialize(),
         },
     )
 
-def email_sendmail(args, config, subj, body):
-    msg = construct_message(config, subj, body)
+def email_sendmail(args, config, msg):
     raise Exception("unimplemented")
 
 EMAIL_METHODS = {
@@ -66,34 +52,69 @@ def get_backup_stats(args, config, archive):
     if args.debug:
         with open('borg-stats-example.json', 'r') as f:
             return json.load(f)
-    else:
-        cmd = [
-            'borg',
-            'info',
-            f"{config['backup-host']}:{archive['remote-repo']}",
-            '--last',
-            str(config['email-num-backups']),
-            '--json',
-        ]
-        print('running: ' + ' '.join(cmd))
-        o = subprocess.check_output(
-            cmd,
-            text=True,
-            env={
-                'BORG_PASSPHRASE': config['backup-password'],
-            }
-        )
-        return json.loads(o)
+    cmd = [
+        'borg',
+        'info',
+        f"{config['backup-host']}:{archive['remote-repo']}",
+        '--last',
+        str(config['email-num-backups']),
+        '--json',
+    ]
+    print('running: ' + ' '.join(cmd))
+    o = subprocess.check_output(
+        cmd,
+        text=True,
+        env={
+            'BORG_PASSPHRASE': config['backup-password'],
+        }
+    )
+    return json.loads(o)
 
-def generate_one_report(args, config, archive):
-    w = []
-    r = []
+class MailMessage:
+    def __init__(self, subj, fromaddr, toaddrs):
+        self.warnings = []
+        self.mainbody = []
+        self.msg = MIMEMultipart('mixed')
+        self.msg['Subject'] = subj
+        self.fromaddr = fromaddr
+        self.msg['From'] = fromaddr
+        self.toaddrs = toaddrs
+        self.msg['To'] = ",".join(toaddrs)
 
+    def body(self, m):
+        self.mainbody.append(m)
+
+    def warn(self, w):
+        self.warnings.append(w)
+
+    def image(self, img):
+        fn = f'img{len(self.mainbody)}'
+        self.body(f'<img src="cid:{fn}">')
+        att = MIMEImage(img, name=fn)
+
+        att.add_header('Content-ID', f'<{fn}>')
+        att.add_header('X-Attachment-Id', fn)
+        att.add_header('Content-Disposition', 'inline', filename=fn)
+        self.msg.attach(att)
+
+    def serialize(self):
+        body = '\n'.join(self.warnings) + '\n'.join(self.mainbody)
+        alternatives = MIMEMultipart('alternative')
+
+        # Construct a new charset which uses Quoted Printables (base64 is default)
+        cs = charset.Charset('utf-8')
+        cs.body_encoding = charset.QP
+
+        alternatives.attach(MIMEText(body, 'html', cs))
+        self.msg.attach(alternatives)
+        return self.msg.as_string()
+
+def generate_one_report(args, config, archive, msg):
     j = get_backup_stats(args, config, archive)
     df = pd.json_normalize(j['archives'])
     df['Date'] = pd.to_datetime(df['start'])
 
-    r.append('<h3>' + archive['remote-repo'] + '</h3>')
+    msg.body('<h3>' + archive['remote-repo'] + '</h3>')
 
     fig = plotly.subplots.make_subplots(
         rows=2,
@@ -131,24 +152,22 @@ def generate_one_report(args, config, archive):
     fig.update_yaxes(row=1, title='Archive Size (bytes)')
     fig.update_yaxes(row=2, title='Number of Files')
 
-    r.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
-
-    return w, r
+    #r.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
+    msg.image(fig.to_image(format='png'))
 
 def generate_reports(args, config):
-    warnings = []
-    reports = []
+    now = pd.Timestamp.now()
+    msg = MailMessage(
+        subj=f'Backup report, {now.month_name()} {now.day}',
+        fromaddr=config['email-from'],
+        toaddrs=config['email-to'],
+    )
 
     for archive in config['backup-specs']:
-        w, r = generate_one_report(args, config, archive)
-        warnings.extend(w)
-        reports.extend(r)
+        generate_one_report(args, config, archive, msg)
 
-    body = '\n'.join(warnings) + '\n'.join(reports)
-    now = pd.Timestamp.now()
-    subj = f'Backup report, {now.month_name()} {now.day}'
     efunc = EMAIL_METHODS[args.email_method]
-    efunc(args, config, subj, body)
+    efunc(args, config, msg)
 
 def get_args():
     parser = argparse.ArgumentParser()
