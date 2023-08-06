@@ -1,0 +1,763 @@
+{
+    "archives": [
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-28T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 73.684392,
+            "end": "2023-07-28T12:19:17.000000",
+            "hostname": "torgo",
+            "id": "1e74e3ab7ab65dea3747f94f3d488f697de604e6109ec8eaf96f9617e8affbb7",
+            "limits": {
+                "max_archive_size": 0.002179626911387604
+            },
+            "name": "2023-07-28T12-18-01",
+            "start": "2023-07-28T12:18:03.000000",
+            "stats": {
+                "compressed_size": 79260945374,
+                "deduplicated_size": 2342369,
+                "nfiles": 675187,
+                "original_size": 96014039302
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-28T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.557022,
+            "end": "2023-07-28T20:19:18.000000",
+            "hostname": "torgo",
+            "id": "f507d64353b27261f8f59df693e19eb0a1ce7304096074b244a7acc438929502",
+            "limits": {
+                "max_archive_size": 0.00217996069805091
+            },
+            "name": "2023-07-28T20-18-01",
+            "start": "2023-07-28T20:18:04.000000",
+            "stats": {
+                "compressed_size": 79261150446,
+                "deduplicated_size": 844977,
+                "nfiles": 675273,
+                "original_size": 96014373508
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-29T04-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 72.653245,
+            "end": "2023-07-29T04:38:11.000000",
+            "hostname": "torgo",
+            "id": "6a6a424104550a28102fcf21a1b40e3231f5a9ad34b113eba4fb059ac6f4fd94",
+            "limits": {
+                "max_archive_size": 0.002178148713307249
+            },
+            "name": "2023-07-29T04-18-01",
+            "start": "2023-07-29T04:36:58.000000",
+            "stats": {
+                "compressed_size": 79261187852,
+                "deduplicated_size": 1149584,
+                "nfiles": 675276,
+                "original_size": 96014474551
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-29T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 73.322976,
+            "end": "2023-07-29T12:19:17.000000",
+            "hostname": "torgo",
+            "id": "1ae4ea4779a37b25b7ab44687cefe27a9a1831693fef54560562d60ab27ec0ae",
+            "limits": {
+                "max_archive_size": 0.002178196397116293
+            },
+            "name": "2023-07-29T12-18-01",
+            "start": "2023-07-29T12:18:04.000000",
+            "stats": {
+                "compressed_size": 79261249935,
+                "deduplicated_size": 1154023,
+                "nfiles": 675279,
+                "original_size": 96014614003
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-29T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.885683,
+            "end": "2023-07-29T20:19:18.000000",
+            "hostname": "torgo",
+            "id": "ca061d7e6ddb346f78b2b8e435f25ed0465c6858efecf90e33b51304b2c7823d",
+            "limits": {
+                "max_archive_size": 0.0021784348161615116
+            },
+            "name": "2023-07-29T20-18-01",
+            "start": "2023-07-29T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79261254092,
+                "deduplicated_size": 1159873,
+                "nfiles": 675282,
+                "original_size": 96014656343
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-30T04-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 72.846737,
+            "end": "2023-07-30T04:38:51.000000",
+            "hostname": "torgo",
+            "id": "e64797fb8c187c62bba0ec8bfa16324df1bf0f8bb601256893d577027f1bf4c3",
+            "limits": {
+                "max_archive_size": 0.0021789116542519486
+            },
+            "name": "2023-07-30T04-18-01",
+            "start": "2023-07-30T04:37:38.000000",
+            "stats": {
+                "compressed_size": 79261348648,
+                "deduplicated_size": 744159,
+                "nfiles": 675286,
+                "original_size": 96014815528
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-30T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.277947,
+            "end": "2023-07-30T12:19:18.000000",
+            "hostname": "torgo",
+            "id": "65bc2234a8a12ad835624bcfe70315b8e9139113b6292a4a14b8441277216394",
+            "limits": {
+                "max_archive_size": 0.0021797699628147353
+            },
+            "name": "2023-07-30T12-18-01",
+            "start": "2023-07-30T12:18:03.000000",
+            "stats": {
+                "compressed_size": 79261375119,
+                "deduplicated_size": 1038496,
+                "nfiles": 675288,
+                "original_size": 96014856867
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-30T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.030068,
+            "end": "2023-07-30T20:19:17.000000",
+            "hostname": "torgo",
+            "id": "e2a9a1b799e29752d942b8c88baa13fa912a82878be1aee0fe08429a52a706d0",
+            "limits": {
+                "max_archive_size": 0.002178244080925337
+            },
+            "name": "2023-07-30T20-18-01",
+            "start": "2023-07-30T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79261379078,
+                "deduplicated_size": 1237489,
+                "nfiles": 675290,
+                "original_size": 96014898400
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-31T04-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.449882,
+            "end": "2023-07-31T04:38:01.000000",
+            "hostname": "torgo",
+            "id": "3810152b60ffe7f37b7d0595b330a03491e4d91827320741c77aa3ae9402f7a3",
+            "limits": {
+                "max_archive_size": 0.002178148713307249
+            },
+            "name": "2023-07-31T04-18-01",
+            "start": "2023-07-31T04:36:46.000000",
+            "stats": {
+                "compressed_size": 79261409369,
+                "deduplicated_size": 1337919,
+                "nfiles": 675290,
+                "original_size": 96014987868
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-31T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 75.11956,
+            "end": "2023-07-31T12:19:19.000000",
+            "hostname": "torgo",
+            "id": "01591291fe1f8d174f9fe50156f6031f8ae1756a2e8d665e0e9184ae9c716b84",
+            "limits": {
+                "max_archive_size": 0.0021781010294982055
+            },
+            "name": "2023-07-31T12-18-01",
+            "start": "2023-07-31T12:18:04.000000",
+            "stats": {
+                "compressed_size": 79261436145,
+                "deduplicated_size": 1455856,
+                "nfiles": 675292,
+                "original_size": 96015029649
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-07-31T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 72.41319,
+            "end": "2023-07-31T20:19:16.000000",
+            "hostname": "torgo",
+            "id": "119a3f8a39612902f6a75bf4a6d967dc82083cc47d22114f4bfab31057f4a078",
+            "limits": {
+                "max_archive_size": 0.002177051985699244
+            },
+            "name": "2023-07-31T20-18-01",
+            "start": "2023-07-31T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79261440534,
+                "deduplicated_size": 1679636,
+                "nfiles": 675296,
+                "original_size": 96015072219
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-01T04-18-02",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 73.540842,
+            "end": "2023-08-01T04:37:49.000000",
+            "hostname": "torgo",
+            "id": "3b63f34219b12f068e3c1fbf3eda6db598a14cc084cce93dac359835d799d93e",
+            "limits": {
+                "max_archive_size": 0.0021768612504630695
+            },
+            "name": "2023-08-01T04-18-02",
+            "start": "2023-08-01T04:36:35.000000",
+            "stats": {
+                "compressed_size": 79261476809,
+                "deduplicated_size": 1028526,
+                "nfiles": 675299,
+                "original_size": 96015162581
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-01T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.239492,
+            "end": "2023-08-01T12:19:18.000000",
+            "hostname": "torgo",
+            "id": "81763cb1cbd87ac59afd76022c9cdcf693a48d1a2f33ae76b22b6757c3335bb6",
+            "limits": {
+                "max_archive_size": 0.0021766705152268945
+            },
+            "name": "2023-08-01T12-18-01",
+            "start": "2023-08-01T12:18:04.000000",
+            "stats": {
+                "compressed_size": 79261500770,
+                "deduplicated_size": 1052479,
+                "nfiles": 675299,
+                "original_size": 96015201614
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-01T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.218773,
+            "end": "2023-08-01T20:19:17.000000",
+            "hostname": "torgo",
+            "id": "b153225b40fcab3d54bd35a6ccdd4dbc2b44068fc9168929625d13013f4a0246",
+            "limits": {
+                "max_archive_size": 0.0021768612504630695
+            },
+            "name": "2023-08-01T20-18-01",
+            "start": "2023-08-01T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79261660797,
+                "deduplicated_size": 1542727,
+                "nfiles": 675308,
+                "original_size": 96015626083
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-02T04-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 72.62613,
+            "end": "2023-08-02T06:03:14.000000",
+            "hostname": "torgo",
+            "id": "bd7cfcd353b5f568592568e61177622d19872189b1f853a7ef1f8b844186ce9f",
+            "limits": {
+                "max_archive_size": 0.00217609830951837
+            },
+            "name": "2023-08-02T04-18-01",
+            "start": "2023-08-02T06:02:02.000000",
+            "stats": {
+                "compressed_size": 79264752098,
+                "deduplicated_size": 1473858,
+                "nfiles": 675363,
+                "original_size": 96022788366
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-02T12-18-02",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 76.232315,
+            "end": "2023-08-02T12:19:20.000000",
+            "hostname": "torgo",
+            "id": "9199762c2c8530fddf857abab89c899b03b7690a04e46441cde5c0987b3472c9",
+            "limits": {
+                "max_archive_size": 0.002180580587568478
+            },
+            "name": "2023-08-02T12-18-02",
+            "start": "2023-08-02T12:18:04.000000",
+            "stats": {
+                "compressed_size": 79264779164,
+                "deduplicated_size": 1546432,
+                "nfiles": 675365,
+                "original_size": 96022831076
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-02T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 74.178658,
+            "end": "2023-08-02T20:19:17.000000",
+            "hostname": "torgo",
+            "id": "edaafc891c3d2253df57bcb61930a8732b82d09f6a8740feff104821605a80ee",
+            "limits": {
+                "max_archive_size": 0.002179007021870036
+            },
+            "name": "2023-08-02T20-18-01",
+            "start": "2023-08-02T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79264782922,
+                "deduplicated_size": 1547198,
+                "nfiles": 675367,
+                "original_size": 96022872893
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-03T04-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 73.158092,
+            "end": "2023-08-03T06:38:43.000000",
+            "hostname": "torgo",
+            "id": "143d0f6e02bb8a5d3c3dfa9c2d5bc0a91cd1ec37f2218ab0659215e0c74daea0",
+            "limits": {
+                "max_archive_size": 0.0021787686028248176
+            },
+            "name": "2023-08-03T04-18-01",
+            "start": "2023-08-03T06:37:30.000000",
+            "stats": {
+                "compressed_size": 79264819772,
+                "deduplicated_size": 1397893,
+                "nfiles": 675369,
+                "original_size": 96022962837
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-03T12-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 73.559304,
+            "end": "2023-08-03T12:19:16.000000",
+            "hostname": "torgo",
+            "id": "bf30c7a3392fe425a2731fc9e9f3a21c8b591630ed2bd7d02d6f62cb692ec3fc",
+            "limits": {
+                "max_archive_size": 0.002178625551397686
+            },
+            "name": "2023-08-03T12-18-01",
+            "start": "2023-08-03T12:18:03.000000",
+            "stats": {
+                "compressed_size": 79264843782,
+                "deduplicated_size": 1315330,
+                "nfiles": 675369,
+                "original_size": 96023001913
+            },
+            "username": "root"
+        },
+        {
+            "chunker_params": [
+                "buzhash",
+                19,
+                23,
+                21,
+                4095
+            ],
+            "command_line": [
+                "/bin/borg",
+                "create",
+                "--stats",
+                "--exclude-caches",
+                "--exclude",
+                "/home/jelson/.cache/*",
+                "jelson@cambot.circlemud.org:/mnt/storage/backups/jelson/torgo/borg::2023-08-03T20-18-01",
+                "/home",
+                "/etc"
+            ],
+            "comment": "",
+            "duration": 77.209147,
+            "end": "2023-08-03T20:19:20.000000",
+            "hostname": "torgo",
+            "id": "1ef0c43b0e62d92edf49b456748d8f8e985a7b03256db3be4cf90fa0116a3154",
+            "limits": {
+                "max_archive_size": 0.0021870655855984215
+            },
+            "name": "2023-08-03T20-18-01",
+            "start": "2023-08-03T20:18:03.000000",
+            "stats": {
+                "compressed_size": 79411771743,
+                "deduplicated_size": 123393402,
+                "nfiles": 677035,
+                "original_size": 96356237005
+            },
+            "username": "root"
+        }
+    ],
+    "cache": {
+        "path": "/home/jelson/.cache/borg/358e0113249a119becac5fa4423d9d098d5bc442d41cbfc77211a163e000f1be",
+        "stats": {
+            "total_chunks": 206856589,
+            "total_csize": 22810926429414,
+            "total_size": 27782374636346,
+            "total_unique_chunks": 1347389,
+            "unique_csize": 251154490170,
+            "unique_size": 329321938669
+        }
+    },
+    "encryption": {
+        "mode": "repokey"
+    },
+    "repository": {
+        "id": "358e0113249a119becac5fa4423d9d098d5bc442d41cbfc77211a163e000f1be",
+        "last_modified": "2023-08-03T20:19:41.000000",
+        "location": "/mnt/storage/backups/jelson/torgo/borg"
+    }
+}
