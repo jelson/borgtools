@@ -18,7 +18,12 @@ import subprocess
 import sys
 import yaml
 
-# Email send methods
+
+def say(s):
+    sys.stderr.write(str(s) + '\n')
+    sys.stderr.flush()
+
+##### Email send methods
 
 # Local file - used for dev/debug, just writes the HTML to the local filesystem
 def email_localfile(args, config, msg):
@@ -61,7 +66,7 @@ def get_backup_stats(args, config, archive):
         str(config['email-num-backups']),
         '--json',
     ]
-    print('running: ' + ' '.join(cmd))
+    say('running: ' + ' '.join(cmd))
     o = subprocess.check_output(
         cmd,
         text=True,
