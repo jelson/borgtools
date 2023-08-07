@@ -127,12 +127,12 @@ def generate_one_report(args, config, archive, msg):
 
     msg.body(f"Latest backup was at {latest['Date']} (")
     msg.body(humanize.precisedelta(age, minimum_unit='hours'))
-    msg.body(' ago). Backup size was ')
-    msg.body(humanize.naturalsize(latest['stats.original_size']))
-    msg.body(' across ')
-    msg.body(humanize.naturalsize(latest['stats.nfiles']))
-    msg.body(' files, compressed down to ')
-    msg.body(humanize.naturalsize(latest['stats.compressed_size']))
+    msg.body(' ago). ')
+    msg.body(humanize.metric(latest['stats.nfiles'], precision=4))
+    msg.body(' files were backed up, taking up ')
+    msg.body(humanize.naturalsize(latest['stats.original_size'], binary=True))
+    msg.body(', compressed to ')
+    msg.body(humanize.naturalsize(latest['stats.compressed_size'], binary=True))
     msg.body('.')
 
     if age > pd.Timedelta(days=2):
