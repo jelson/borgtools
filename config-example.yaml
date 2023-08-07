@@ -1,0 +1,33 @@
+logfile: /var/log/backuplog
+archive-name-format: '%Y-%m-%dT%H-%M-%S'
+backup-host: user@backuphost.org
+backup-password: my-secret-borg-password
+
+# Email notifier params
+email-num-backups: 20
+email-from: "Backup Notifier <backups@mydomain.com>"
+email-to:
+- my_address@mydomain.com
+# needed only if using AWS to send mail
+email-aws-profile: aws-emailer-profile
+
+backup-specs:
+
+# Home directories
+- local-dirs:
+  - /home
+  - /etc
+  remote-repo: /remote/backupdir/homes
+  exclude:
+  - /home/user/.cache/*
+
+# Windows user directory
+- local-dirs:
+  - /mnt/samba/windows
+  remote-repo: /remote/backupdir/windows
+  is-slow: true
+  exclude:
+  - /mnt/samba/windows/AppData
+  - /mnt/samba/windows/NTUSER.DAT*
+  extra-args:
+  - --noxattrs
