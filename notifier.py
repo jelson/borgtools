@@ -3,15 +3,12 @@
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.utils import make_msgid
 from email import charset
 import argparse
 import boto3
-import html
 import humanize
 import json
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 import plotly.subplots
 import subprocess
@@ -23,7 +20,9 @@ def say(s):
     sys.stderr.write(str(s) + '\n')
     sys.stderr.flush()
 
-##### Email send methods
+
+####### Email send methods
+
 
 # Local file - used for dev/debug, just writes the HTML to the local filesystem
 def email_localfile(args, config, msg):
@@ -32,9 +31,10 @@ def email_localfile(args, config, msg):
     with open(fn, 'w') as f:
         f.write(msg.serialize())
 
+
 def email_aws(args, config, msg):
     session = boto3.Session(profile_name=config['email-aws-profile'])
-    client = session.client('ses', region_name = 'us-west-2')
+    client = session.client('ses', region_name='us-west-2')
     client.send_raw_email(
         Source=msg.fromaddr,
         Destinations=msg.toaddrs,
@@ -43,8 +43,10 @@ def email_aws(args, config, msg):
         },
     )
 
+
 def email_sendmail(args, config, msg):
     raise Exception("unimplemented")
+
 
 EMAIL_METHODS = {
     'debug': email_localfile,
@@ -52,7 +54,8 @@ EMAIL_METHODS = {
     'sendmail': email_sendmail,
 }
 
-#### Report generation
+###### Report generation
+
 
 def get_backup_stats(args, config, archive):
     if args.debug:
@@ -75,6 +78,7 @@ def get_backup_stats(args, config, archive):
         }
     )
     return json.loads(o)
+
 
 class MailMessage:
     def __init__(self, subj, fromaddr, toaddrs):
@@ -115,6 +119,7 @@ class MailMessage:
         self.msg.attach(alternatives)
         return self.msg.as_string()
 
+
 def generate_one_report(args, config, archive, msg):
     j = get_backup_stats(args, config, archive)
     df = pd.json_normalize(j['archives'])
@@ -143,7 +148,6 @@ def generate_one_report(args, config, archive, msg):
         msg.warn(humanize.precisedelta(age, minimum_unit='hours'))
         msg.warn(" old!</p>")
 
-
     fig = plotly.subplots.make_subplots(
         rows=2,
         cols=1,
@@ -152,7 +156,7 @@ def generate_one_report(args, config, archive, msg):
     )
     fig.update_layout(
         height=400,
-        margin=dict(l=50,r=50,b=0,t=10),
+        margin=dict(l=50, r=50, b=0, t=10),
         showlegend=False,
     )
     fig.append_trace(
@@ -183,6 +187,7 @@ def generate_one_report(args, config, archive, msg):
     #r.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
     msg.image(fig.to_image(format='png'))
 
+
 def generate_reports(args, config):
     now = pd.Timestamp.now()
     msg = MailMessage(
@@ -196,6 +201,7 @@ def generate_reports(args, config):
 
     efunc = EMAIL_METHODS[args.email_method]
     efunc(args, config, msg)
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -220,11 +226,13 @@ def get_args():
 
     return parser.parse_args()
 
+
 def main():
     args = get_args()
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
     generate_reports(args, config)
+
 
 if __name__ == '__main__':
     main()

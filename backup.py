@@ -7,9 +7,11 @@ import sys
 import time
 import yaml
 
+
 def say(s):
     print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] BACKSTATUS: {s}")
     sys.stdout.flush()
+
 
 def run(args, config, cmdline):
     prefix = "would run" if args.dry_run else "running"
@@ -25,9 +27,10 @@ def run(args, config, cmdline):
             },
         )
 
+
 def backup_one(args, config, backupspec):
     now = datetime.datetime.now()
-    remote_repo =  f"{config['backup-host']}:{backupspec['remote-repo']}"
+    remote_repo = f"{config['backup-host']}:{backupspec['remote-repo']}"
     archive_name = f"{remote_repo}::{now.strftime(config['archive-name-format'])}"
 
     say("\n\n")
@@ -71,6 +74,7 @@ def backup_one(args, config, backupspec):
     ]
     run(args, config, cmdline)
 
+
 def backup(args, config):
     say("Starting up")
     now = datetime.datetime.now()
@@ -84,6 +88,7 @@ def backup(args, config):
         backup_one(args, config, backupspec)
 
     say("Finishing\n\n\n")
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -101,6 +106,7 @@ def get_args():
     )
     return parser.parse_args()
 
+
 def main():
     args = get_args()
 
@@ -112,6 +118,7 @@ def main():
         sys.stderr = sys.stdout
 
     backup(args, config)
+
 
 if __name__ == "__main__":
     main()
