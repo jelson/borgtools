@@ -82,8 +82,9 @@ def get_backup_stats(args, config, archive):
 
 class MailMessage:
     def __init__(self, subj, fromaddr, toaddrs):
-        self.warnings = []
+        self.header = []
         self.mainbody = []
+        self.graphs = []
         self.msg = MIMEMultipart('mixed')
         self.msg['Subject'] = subj
         self.fromaddr = fromaddr
@@ -91,15 +92,24 @@ class MailMessage:
         self.toaddrs = toaddrs
         self.msg['To'] = ",".join(toaddrs)
 
+    def head(self, w):
+        self.header.append(w)
+
     def body(self, m):
         self.mainbody.append(m)
 
-    def warn(self, w):
-        self.warnings.append(w)
+    def td(self, s, tdclass=None):
+        self.body(f"<td")
+        if tdclass:
+            self.body(f' class="{tdclass}"')
+        self.body(f">{s}</td>")
+
+    def graph(self, g):
+        self.graphs.append(g)
 
     def image(self, img):
-        fn = f'img{len(self.mainbody)}'
-        self.body(f'<img src="cid:{fn}">')
+        fn = f'img{len(self.graphs)}'
+        self.graph(f'<img src="cid:{fn}">')
         att = MIMEImage(img, name=fn)
 
         att.add_header('Content-ID', f'<{fn}>')
@@ -108,7 +118,7 @@ class MailMessage:
         self.msg.attach(att)
 
     def serialize(self):
-        body = ''.join(self.warnings) + ''.join(self.mainbody)
+        body = ''.join(self.header) + ''.join(self.mainbody) + ''.join(self.graphs)
         alternatives = MIMEMultipart('alternative')
 
         # Construct a charset using Quoted Printables (base64 is default)
@@ -125,28 +135,28 @@ def generate_one_report(args, config, archive, msg):
     df = pd.json_normalize(j['archives'])
     df['Date'] = pd.to_datetime(df['start'])
 
-    msg.body('<h3>' + archive['remote-repo'] + '</h3>')
-
     latest = df.iloc[df['Date'].idxmax()]
     age = pd.Timestamp.now() - latest['Date']
 
-    msg.body(f"Latest backup was at {latest['Date']} (")
-    msg.body(humanize.precisedelta(age, minimum_unit='hours'))
-    msg.body(' ago). ')
-    msg.body(humanize.metric(latest['stats.nfiles'], precision=4))
-    msg.body(' files were backed up, taking up ')
-    msg.body(humanize.naturalsize(latest['stats.original_size'], binary=True))
-    msg.body(', compressed to ')
-    msg.body(humanize.naturalsize(latest['stats.compressed_size'], binary=True))
-    msg.body('.')
-
     if age > pd.Timedelta(days=2):
-        msg.warn("<p style='font-weight: bold; color: red'>")
-        msg.warn("WARNING: Backup ")
-        msg.warn(archive['remote-repo'])
-        msg.warn(" is ")
-        msg.warn(humanize.precisedelta(age, minimum_unit='hours'))
-        msg.warn(" old!</p>")
+        msg.head("<p style='font-weight: bold; color: red'>")
+        msg.head("WARNING: Backup ")
+        msg.head(archive['remote-repo'])
+        msg.head(" is ")
+        msg.head(humanize.precisedelta(age, minimum_unit='hours'))
+        msg.head(" old!</p>")
+        tdclass = 'bad'
+    else:
+        tdclass = 'good'
+
+    msg.body("<tr>")
+    msg.td(archive['remote-repo'].split('/')[-1])
+    msg.td(latest['Date'])
+    msg.td(humanize.precisedelta(age, minimum_unit='hours'), tdclass=tdclass)
+    msg.td(humanize.metric(latest['stats.nfiles'], precision=4))
+    msg.td(humanize.naturalsize(latest['stats.original_size'], binary=True))
+    msg.td(humanize.naturalsize(latest['stats.compressed_size'], binary=True))
+    msg.body("</tr>")
 
     fig = plotly.subplots.make_subplots(
         rows=2,
@@ -185,6 +195,7 @@ def generate_one_report(args, config, archive, msg):
     fig.update_yaxes(row=2, title='Number of Files')
 
     #r.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
+    msg.graph('<h3>' + archive['remote-repo'] + '</h3>')
     msg.image(fig.to_image(format='png'))
 
 
@@ -196,8 +207,58 @@ def generate_reports(args, config):
         toaddrs=config['email-to'],
     )
 
+    msg.head("""
+<html>
+<head>
+<style>
+table.backup {
+    overflow: auto;
+    border: 1px solid #dededf;
+    table-layout: auto;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    text-align: left;
+}
+
+table.backup th {
+    border: 1px solid #dededf;
+    background-color: #eceff1;
+    color: #000000;
+    padding: 5px;
+}
+
+table.backup td {
+    border: 1px solid #dededf;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 5px;
+}
+
+table.backup .good {
+  background-color: lightgreen;
+}
+
+table.backup .bad {
+  background-color: salmon;
+}
+</style>
+</head>
+<body>
+""")
+
+    msg.body('<table class="backup"><thead>')
+    msg.body("<th>Partition</th>")
+    msg.body("<th>Last Backup</th>")
+    msg.body("<th>Backup Age</th>")
+    msg.body("<th>Num Files</th>")
+    msg.body("<th>Orig Size</th>")
+    msg.body("<th>Backup Size</th>")
+    msg.body("</thead><tbody>")
+
     for archive in config['backup-specs']:
         generate_one_report(args, config, archive, msg)
+
+    msg.body("</tbody></table></body></html>")
 
     efunc = EMAIL_METHODS[args.email_method]
     efunc(args, config, msg)
