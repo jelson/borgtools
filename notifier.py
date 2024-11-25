@@ -95,6 +95,11 @@ class MailMessage:
     def head(self, w):
         self.header.append(w)
 
+    def warn(self, archive, s):
+        self.head("<p style='font-weight: bold; color: red'>")
+        self.head(f"WARNING: {archive['remote-repo']}: {s}")
+        self.head("</p>")
+
     def body(self, m):
         self.mainbody.append(m)
 
@@ -133,30 +138,63 @@ class MailMessage:
 def generate_one_report(args, config, archive, msg):
     j = get_backup_stats(args, config, archive)
     df = pd.json_normalize(j['archives'])
-    df['Date'] = pd.to_datetime(df['start'])
 
+    # Get earliest and latest backups
+    df['Date'] = pd.to_datetime(df['start'])
+    earliest = df.iloc[df['Date'].idxmin()]
     latest = df.iloc[df['Date'].idxmax()]
+
+    msg.body("<tr>")
+
+    # Column 1: Partition
+    msg.td(archive['remote-repo'].split('/')[-1])
+
+    # Column 2: Date
+    msg.td(latest['Date'])
+
+    # Column 3: Age
     age = pd.Timestamp.now() - latest['Date']
 
     if age > pd.Timedelta(days=2):
-        msg.head("<p style='font-weight: bold; color: red'>")
-        msg.head("WARNING: Backup ")
-        msg.head(archive['remote-repo'])
-        msg.head(" is ")
-        msg.head(humanize.precisedelta(age, minimum_unit='hours'))
-        msg.head(" old!</p>")
+        msg.warn(archive, f"{humanize.precisedelta(age, minimum_unit='hours')} old!")
         tdclass = 'bad'
     else:
         tdclass = 'good'
-
-    msg.body("<tr>")
-    msg.td(archive['remote-repo'].split('/')[-1])
-    msg.td(latest['Date'])
     msg.td(humanize.precisedelta(age, minimum_unit='hours'), tdclass=tdclass)
-    msg.td(humanize.metric(latest['stats.nfiles'], precision=4))
-    msg.td(humanize.naturalsize(latest['stats.original_size'], binary=True))
+
+    # Column 4: Number of Files
+    nfiles = latest['stats.nfiles']
+    if nfiles < 100:
+        msg.warn(archive, "Few files backed up!")
+        tdclass = 'bad'
+    else:
+        tdclass = 'good'
+    msg.td(humanize.metric(nfiles, precision=4), tdclass=tdclass)
+
+    # Column 5: original size
+    osize = latest['stats.original_size']
+    if osize < 10000:
+        msg.warn(archive, "Few bytes backed up!")
+        tdclass = 'bad'
+    else:
+        tdclass = 'good'
+    msg.td(humanize.naturalsize(osize, binary=True), tdclass=tdclass)
+
+    # Column 6: Compressed size
     msg.td(humanize.naturalsize(latest['stats.compressed_size'], binary=True))
+
     msg.body("</tr>")
+
+    # Check to see if there's been a big drop in number of files or bytes
+    if earliest['stats.nfiles'] > 0:
+        pct_drop_files = latest['stats.nfiles'] / earliest['stats.nfiles'] - 1
+        if abs(pct_drop_files) > 0.2:
+            msg.warn(archive, f"Big change in files backed up: {100*pct_drop_files:.1f}%!")
+
+    if earliest['stats.original_size'] > 0:
+        pct_drop_bytes = latest['stats.original_size'] / earliest['stats.original_size'] - 1
+        if abs(pct_drop_bytes) > 0.2:
+            msg.warn(archive, f"Big change in size backed up: {100*pct_drop_bytes:.1f}%!")
 
     fig = plotly.subplots.make_subplots(
         rows=2,
